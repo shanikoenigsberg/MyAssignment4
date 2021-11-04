@@ -21,7 +21,7 @@ public class BetBalanceCalc {
 	}
 
 	public boolean canBet(double amnt) {
-		if ((balance - minBalance) >= amnt) {
+		if ((balance - minBalance) <= amnt) {
 			return true;
 		}
 		return false;
