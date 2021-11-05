@@ -8,9 +8,9 @@ import org.junit.Test;
 
 public class TestBetCalc {
 	
-	private double minBalance;
-	private MockGenerator myRandom;
-	private BetBalanceCalc myBetBalance;
+	double minBalance;
+	MockGenerator myRandom;
+	BetBalanceCalc myBetBalance;
 	
 	@Before
 	public void preConditions() {
@@ -22,7 +22,7 @@ public class TestBetCalc {
 	@Test
 	public void addsMoneyCorrectly() {		
 		myBetBalance.addMoney(20);
-		assertEquals(20, myBetBalance.getCurrentBalance(), .01);
+		assertEquals(20, myBetBalance.getCurrentBalance(), .001);
 	}
 	
 	
@@ -42,15 +42,15 @@ public class TestBetCalc {
 	}
 	
 	@Test
-	public void betOnNumberWinCalcCorrect() {
+	public void betOnNumberWinReturnsCorrect() {
 		myRandom.setRandom(3);
-		assertEquals(950, myBetBalance.betOnANumber(50, 1, 20, 3), .01);
+		assertEquals(190, myBetBalance.betOnANumber(10, 1, 20, 3), .001);
 	}
 	
 	@Test
-	public void betOnNumberLoseCalcCorrect() {
+	public void betOnNumberLoseReturnsCorrect() {
 		myRandom.setRandom(5);
-		assertEquals(-50, myBetBalance.betOnANumber(50, 1, 2, 7), .01);
+		assertEquals(-10, myBetBalance.betOnANumber(10, 1, 20, 7), .001);
 	}
 	
 	@Test(expected = InvalidProbabilityException.class)
@@ -59,30 +59,62 @@ public class TestBetCalc {
 	}
 	
 	@Test
-	public void betOnProbWinCalcCorrect() {
+	public void betOnProbWinReturnsCorrect() {
 		myRandom.setRandom(32);
-		assertEquals(10, myBetBalance.betOnProbability(10, .5), .01);
+		assertEquals(10, myBetBalance.betOnProbability(10, .5), .001);
 	}
 	
 	@Test
-	public void betOnProbLoseCalcCorrect() {
+	public void betOnProbLoseReturnsCorrect() {
 		myRandom.setRandom(32);
-		assertEquals(-10, myBetBalance.betOnProbability(10, .2), .01);
+		assertEquals(-10, myBetBalance.betOnProbability(10, .2), .001);
 	}
 	
 	@Test
-	public void betOnNegNumberReturn0() {
+	public void betOnNumberNegAmntReturn0() {
 		myRandom.setRandom(6);
-		assertEquals(0, myBetBalance.betOnANumber(-10, 1, 20, 5), .01);
+		assertEquals(0, myBetBalance.betOnANumber(-10, 1, 20, 5), .001);
 
 	}
 	
 	@Test
-	public void betOnNegNumberProbReturn0() {
+	public void betOnProbNegAmntReturn0() {
 		myRandom.setRandom(50);
-		assertEquals(0, myBetBalance.betOnProbability(-10, .8), .01);
+		assertEquals(0, myBetBalance.betOnProbability(-10, .8), .001);
 
 	}
+	
+	//checks if balance updates correctly after going through the bet num class
+	@Test
+	public void betOnNumWinBalanceUpdatesCorrect() {
+		myRandom.setRandom(5);
+		myBetBalance.betOnANumber(10, 1, 20, 5);
+		assertEquals(190, myBetBalance.getCurrentBalance(), .001);
+	}
+	
+	@Test
+	public void betOnNumLoseBalanceUpdatesCorrect() {
+		myRandom.setRandom(5);
+		myBetBalance.betOnANumber(10, 1, 20, 7);
+		assertEquals(-10, myBetBalance.getCurrentBalance(), .001);
+	}
+	
+	@Test
+	public void betOnProbBalanceWinUpDatesCorrect() {
+		myRandom.setRandom(32);
+		myBetBalance.betOnProbability(10, .5);
+		assertEquals(10, myBetBalance.getCurrentBalance(), .001);
+	}
+	
+	@Test
+	public void betOnProbLoseBalanceUpdatesCorrect() {
+		myRandom.setRandom(32);
+		myBetBalance.betOnProbability(10, .2);
+		assertEquals(-10, myBetBalance.getCurrentBalance(), .001);
+	}
+	
+	
+	
 	
 	
 	
